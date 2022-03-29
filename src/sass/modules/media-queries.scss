@@ -1,0 +1,14 @@
+@media (min-width:450px){
+    header {
+        ul li{
+            font-size: 2rem;
+        }
+    }
+}
+@media (min-width:1200px){
+    header {
+        ul li{
+            font-size: 3rem;
+        }
+    }
+}

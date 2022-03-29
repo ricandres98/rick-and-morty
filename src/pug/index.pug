@@ -1,17 +1,9 @@
 extend componentes/template.pug
 block main-content
-    main 
-        .main-grid-container
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
+    main.main-page 
+        section.main-page__hero 
+            h1 Welcome to the biggest database of Rick & Morty's characters and episodes!
+        .main-page__main-grid-container
             +character-card
             +character-card
             +character-card
