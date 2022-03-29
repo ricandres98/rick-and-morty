@@ -1,11 +1,17 @@
-$fuente1: 'Fugaz One', cursive;
+$fuente1: 'Russo One', sans-serif;
 $fuente2: 'Lato', sans-serif;
-$primary-color-1: #C2FF40;
-$primary-color-2: #71ee35;
-$primary-color-3:#19e337;
-$secondary-color-1: #0b3a47;
-$third-color-1: #3e203a;
-$white:#F7FFE6;
+$primary-color-1: #94E34F;
+$primary-color-1-dark-1: #79C932;
+$primary-color-1-dark-2: #60B01A;
+$primary-color-1-light-1: #A8ED6B;
+$primary-color-1-light-2: #BEFA89;
+$secondary-color-1: #457999;
+$secondary-color-1-dark-1: #2D6080;
+$secondary-color-1-dark-2: #1C4F6E;
+$secondary-color-1-light-1: #6294B3;
+$secondary-color-1-light-2: #85B1CC;
+$black: #012033;
+$white:#E6EDF2;
 
 * {
     padding: 0;
@@ -29,6 +35,18 @@ img {
 body {
     font-size: 1.5rem;
     font-family: $fuente2;
+    color: $black;
+}
+
+@mixin main-grid-container {
+    max-width: 1215px;
+    margin: 0 auto;
+    padding: 140px 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(0, 280px));
+    grid-auto-rows: 400px;
+    gap: 25px;
+    justify-content: center;
 }
 
 @mixin character-card {
@@ -61,8 +79,10 @@ header {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     font-family: $fuente1;
-    background-image: linear-gradient(to right bottom, #c2ff40, #a5f83a, #84f236, #5eea35, #19e337);
+    // background-image: linear-gradient(to right bottom, #c2ff40, #a5f83a, #84f236, #5eea35, #19e337);
+    background-image: linear-gradient(to right bottom, #c2ff40, #acfa3b, #95f537, #7cef35, #5eea35, #4ae847, #32e657, #00e464, #00e57e, #00e594, #00e4a7, #19e3b7);
     
+
     h2 {
         // max-width: 100%;
     }
@@ -80,7 +100,7 @@ header {
             display: inline-block;
             margin: 20px 0;
             font-size: 1.5rem;
-            color: #0b3a47;
+            color: $black;
             border-radius: 10px;
             // background-color: $primary-color-1;
             // box-shadow: inset -2px -2px 10px #19e337;

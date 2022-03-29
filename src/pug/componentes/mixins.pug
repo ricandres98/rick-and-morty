@@ -8,3 +8,11 @@ mixin character-card
                 li.character-gender: strong Gender:
                 li.character-location: strong Location: 
                 li.character-species: strong Species:
+
+mixin panel 
+    .panel
+        .pages 
+            span.page-number 1
+        .buttons
+            button(type="button" onclick="priorPage()") Previous
+            button(type="button" onclick="nextPage()") Next

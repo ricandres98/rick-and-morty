@@ -33,19 +33,14 @@ getAPIResources();
 function printCharacterCards() {
     for(let i = 0; i < characterName.length; i++) {
         characterImages[i].src = characters.results[i].image;
+        characterImages[i].alt = characters.results[i].name;
         characterName[i].innerHTML += ' ' + characters.results[i].name;
         characterGender[i].innerHTML += ' ' + characters.results[i].gender;
         characterLocation[i].innerHTML += ' ' + characters.results[i].location.name;
         characterSpecies[i].innerHTML += ' ' + characters.results[i].species;
     }
 }
-const intervalArray = (start, end) => {
-    const array = [];
-    for(let i = start; i <= end; i++) {
-        array.push(i);
-    }
-    return array;
-}
+
 
 const getPage = async (url, start, end) => {
     return await fetchData(url + '/' + intervalArray(start,end));

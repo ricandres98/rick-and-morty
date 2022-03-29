@@ -5,6 +5,12 @@
         }
     }
 }
+@media (min-width: 700px) {
+    .main-page__hero h1{
+        font-size: 5rem;
+        line-height: 6rem;
+    }
+}
 @media (min-width:1200px){
     header {
         ul li{
