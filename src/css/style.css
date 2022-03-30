@@ -52,6 +52,20 @@ header ul li {
   border-radius: 10px;
 }
 
+footer {
+  min-height: 150px;
+  padding: 30px 10px;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  background-color: #43e74c;
+  font-size: 1.8rem;
+}
+footer a {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 main.characters-page {
   padding-top: 50px;
   padding-bottom: 50px;

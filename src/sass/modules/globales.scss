@@ -107,3 +107,17 @@ header {
         }
     }
 }
+
+footer {
+    min-height: 150px;
+    padding: 30px 10px;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    background-color: #43e74c;
+    font-size: 1.8rem;
+    a { 
+        text-decoration: underline;
+        font-weight: bold;
+    }
+}
