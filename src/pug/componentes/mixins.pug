@@ -9,7 +9,18 @@ mixin character-card
                 li.character-location: strong Location: 
                 li.character-species: strong Species:
 
-mixin panel 
+mixin panel-search
+    .panel
+        .search 
+            input(type="text")#input-search
+            button(type="button" onclick="searchCharacters()") Search
+        .pages 
+            span.page-number 1
+        .buttons
+            button(type="button" onclick="priorPage()") Previous
+            button(type="button" onclick="nextPage()") Next
+
+mixin panel
     .panel
         .pages 
             span.page-number 1

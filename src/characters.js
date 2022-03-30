@@ -5,46 +5,48 @@ const characterGender = document.getElementsByClassName('character-gender');
 const characterLocation = document.getElementsByClassName('character-location');
 const characterSpecies = document.getElementsByClassName('character-species');
 const characterImages = document.getElementsByClassName('character-image');
+const characterCards = [...document.getElementsByClassName('character')];
+
+const inputSearch = document.getElementById('input-search');
 
 const pageNumber = [...document.getElementsByClassName('page-number')];
 console.log(pageNumber);
 
-const API = "https://rickandmortyapi.com/api/";
-let APILinks = {}; 
+const API = "https://rickandmortyapi.com/api/character/";
 let characters = [];
-let firstItemToShow = 1;
-let lastItemToShow = 20;
 let pageNumberValue = 1;
+// Variable que permite almacenar el último objeto recibido a través de fetchData,
+// sirve para implementar más facilmente la paginación
+let lastResult = '';
 
 
 const getAPIResources = async () => {
     try {
-        APILinks = await fetchData(API);
-        characters = await getPage(APILinks.characters, firstItemToShow, lastItemToShow);
+        characters = await fetchData(API);
+        lastResult = characters;
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
         printCharacterCards();
     } catch(error) {
         console.error(error);
     }
 }
-const intervalArray = (start, end) => {
-    const array = [];
-    for(let i = start; i <= end; i++) {
-        array.push(i);
-    }
-    return array;
-}
-const getPage = async (url, start, end) => {
-    return await fetchData(url + '/' + intervalArray(start,end));
-}
 function printCharacterCards() {
+    characterCards.forEach((card) => card.style.display = 'block');
+    if(lastResult.results.length < characterCards.length) {
+        let diff = lastResult.results.length;
+        for(let i = diff; i < 20; i++) {
+            characterCards[i].style.display = 'none';
+        }
+    }
+    // let toBeUsed = lastResult.results.slice()
     resetCardsValues();
-    for(let i = 0; i < characterName.length; i++) {
-        characterImages[i].src = characters[i].image;
-        characterImages[i].alt = characters[i].name;
-        characterName[i].innerHTML += ' ' + characters[i].name;
-        characterGender[i].innerHTML += ' ' + characters[i].gender;
-        characterLocation[i].innerHTML += ' ' + characters[i].location.name;
-        characterSpecies[i].innerHTML += ' ' + characters[i].species;
+    for(let i = 0; i < lastResult.results.length; i++) {
+        characterImages[i].src = characters.results[i].image;
+        characterImages[i].alt = characters.results[i].name;
+        characterName[i].innerHTML += ' ' + characters.results[i].name;
+        characterGender[i].innerHTML += ' ' + characters.results[i].gender;
+        characterLocation[i].innerHTML += ' ' + characters.results[i].location.name;
+        characterSpecies[i].innerHTML += ' ' + characters.results[i].species;
     }
 }
 function resetCardsValues() {
@@ -55,24 +57,56 @@ function resetCardsValues() {
         characterSpecies[i].innerHTML = '<strong>Species: </strong>';
     }
 }
+
 const nextPage = async () => {
-    firstItemToShow += 20;
-    lastItemToShow += 20;
-    pageNumberValue += 1;
-    pageNumber.forEach((item) => item.innerText = pageNumberValue);
-    characters = await getPage(APILinks.characters, firstItemToShow, lastItemToShow)
-    printCharacterCards();
-}
-const priorPage = async () => {
-    if(firstItemToShow > 20) {
-        firstItemToShow -= 20;
-        lastItemToShow -= 20;
-        pageNumberValue -= 1;
-        pageNumber.forEach((item) => item.innerText = pageNumberValue);
-        characters = await getPage(APILinks.characters, firstItemToShow, lastItemToShow)
+    if(lastResult.info.next != null) {
+        pageNumberValue += 1;
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+
+        characters = await fetchData(lastResult.info.next);
+        lastResult = characters;
+
         printCharacterCards();
     }
 }
+const priorPage = async () => {
+    if(lastResult.info.prev != null) {
+        pageNumberValue -= 1;
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+
+        characters = await fetchData(lastResult.info.prev);
+        lastResult = characters;
+
+        printCharacterCards();
+    }
+}
+
+const getInputValue = () => {
+    let stringToFind = inputSearch.value;
+    stringToFind = stringToFind.trim();
+    while(stringToFind.includes(' ')) {
+        stringToFind = stringToFind.replace(' ', '%20');
+    }
+    return stringToFind;
+}
+
+const searchCharacters = async () => {
+    try {
+        console.log(API + '?name=' + getInputValue());
+        characters = await fetchData(API + '?name=' + getInputValue());
+        lastResult = characters;
+
+        pageNumberValue = 1;
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+
+        printCharacterCards();
+    } catch(error){
+        console.error(error, `Nothing found under keywords: ${inputSearch.value}`);
+        characterCards.forEach((card) => card.style.display = "none");
+    }
+}
+
 document.addEventListener('onload', getAPIResources());
 window.nextPage = nextPage;
 window.priorPage = priorPage;
+window.searchCharacters = searchCharacters;

@@ -31,6 +31,9 @@ ul {
 img {
     max-width: 100%;
 }
+*:focus-visible {
+    outline: 1px solid $black;
+}
 
 body {
     font-size: 1.5rem;
@@ -114,10 +117,14 @@ footer {
     display: grid;
     justify-content: center;
     justify-items: center;
+    gap: 20px;
     background-color: #43e74c;
     font-size: 1.8rem;
     a { 
         text-decoration: underline;
         font-weight: bold;
+    }
+    p {
+        text-align: center;
     }
 }
