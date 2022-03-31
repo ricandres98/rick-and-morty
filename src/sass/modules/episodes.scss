@@ -1,0 +1,33 @@
+main.episodes-page {
+    @include main-secondary-page();
+    h1 {
+        @include h1-secondary-page();
+    }
+}
+.episodes-page__main-grid-container {
+    max-width: 1215px;
+    margin: 0 auto;
+    padding: 30px 10px;
+    display: grid;
+    // justify-items: flex-end;
+    gap: 40px;
+}
+.episode {
+    // @include card();
+    // width: 50%;
+    padding: 20px;
+    background-color: $white;
+    border-radius: 5px;
+    ul{
+        display: grid;
+        // justify-content: center;
+        gap: 20px;
+        li {
+            font-size: 3rem;
+        }
+    }
+
+    &:nth-of-type(2n-1) {
+        // justify-self: flex-start;
+    }
+}

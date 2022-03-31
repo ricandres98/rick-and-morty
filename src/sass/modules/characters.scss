@@ -1,16 +1,8 @@
 main.characters-page {
-    min-height: 80vh;
-    padding-top: 50px;
-    padding-bottom: 50px;
-    background-color: $primary-color-1;
-    background-image: linear-gradient(to right top, #c2ff40, #acfa3b, #95f537, #7cef35, #5eea35, #4ae847, #32e657, #00e464, #00e57e, #00e594, #00e4a7, #19e3b7);
+    @include main-secondary-page();
 
     h1{
-        margin: 0 auto;
-        text-align: center;
-        font-family: $fuente1;
-        font-size: 4rem;
-        letter-spacing: 2px;
+        @include h1-secondary-page();
     }
 
 }
@@ -80,6 +72,6 @@ main.characters-page {
     padding-bottom: 30px;
 
     .character {
-        @include character-card();
+        @include card();
     }
 }

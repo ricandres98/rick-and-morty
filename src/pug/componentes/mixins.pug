@@ -9,11 +9,30 @@ mixin character-card
                 li.character-location: strong Location: 
                 li.character-species: strong Species:
 
-mixin panel-search
+mixin episode-card 
+    .episode 
+        .episode__info 
+            ul 
+                li.episode-name: strong Name: 
+                li.episode-date: strong Date: 
+                li.episode-number: strong Episode: 
+
+mixin characters-panel-search
     .panel
         .search 
             input(type="text")#input-search
-            button(type="button" onclick="searchCharacters()") Search
+            button#button-search(type="button" onclick="searchCharacters()") Search
+        .pages 
+            span.page-number 1
+        .buttons
+            button(type="button" onclick="priorPage()") Previous
+            button(type="button" onclick="nextPage()") Next
+
+mixin episodes-panel-search
+    .panel
+        .search 
+            input(type="text")#input-search
+            button#button-search(type="button" onclick="searchEpisodes()") Search
         .pages 
             span.page-number 1
         .buttons

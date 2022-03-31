@@ -1,10 +1,7 @@
 @import "./modules/globales.scss";
 @import "./modules/characters.scss";
+@import "./modules/episodes.scss";
 
-.main-page{ 
-    // background-image: linear-gradient(to right bottom, #c2ff40, #a5f83a, #84f236, #5eea35, #19e337);
-    background-image: linear-gradient(to right top, #c2ff40, #acfa3b, #95f537, #7cef35, #5eea35, #4ae847, #32e657, #00e464, #00e57e, #00e594, #00e4a7, #19e3b7);
-}
 
 .main-page__hero {
     width: 100%;
@@ -63,7 +60,7 @@
     @include main-grid-container();
     
     .character {
-        @include character-card();
+        @include card();
     }
 }
 @import "./modules/media-queries.scss";

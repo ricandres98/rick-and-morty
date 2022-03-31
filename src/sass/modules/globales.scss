@@ -40,6 +40,11 @@ body {
     font-family: $fuente2;
     color: $black;
 }
+main{ 
+    // background-image: linear-gradient(to right bottom, #c2ff40, #a5f83a, #84f236, #5eea35, #19e337);
+    background-color: $primary-color-1;
+    background-image: linear-gradient(to right top, #c2ff40, #acfa3b, #95f537, #7cef35, #5eea35, #4ae847, #32e657, #00e464, #00e57e, #00e594, #00e4a7, #19e3b7);
+}
 
 @mixin main-grid-container {
     max-width: 1215px;
@@ -52,7 +57,7 @@ body {
     justify-content: center;
 }
 
-@mixin character-card {
+@mixin card {
     padding: 10px;
     background-color: $white;
     border-radius: 5px;
@@ -75,6 +80,20 @@ body {
             }
         }
     }
+}
+
+@mixin main-secondary-page {
+    min-height: 80vh;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+@mixin h1-secondary-page {
+    margin: 0 auto;
+    text-align: center;
+    font-family: $fuente1;
+    font-size: 4rem;
+    letter-spacing: 2px;
 }
 
 header {

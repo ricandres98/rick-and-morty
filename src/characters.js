@@ -1,4 +1,5 @@
 import { fetchData } from "./utils/fetchData.js";
+import { getInputValue } from "./utils/getInputValue.js";
 
 const characterName = document.getElementsByClassName('character-name');
 const characterGender = document.getElementsByClassName('character-gender');
@@ -10,7 +11,6 @@ const characterCards = [...document.getElementsByClassName('character')];
 const inputSearch = document.getElementById('input-search');
 
 const pageNumber = [...document.getElementsByClassName('page-number')];
-console.log(pageNumber);
 
 const API = "https://rickandmortyapi.com/api/character/";
 let characters = [];
@@ -81,19 +81,30 @@ const priorPage = async () => {
     }
 }
 
-const getInputValue = () => {
-    let stringToFind = inputSearch.value;
-    stringToFind = stringToFind.trim();
-    while(stringToFind.includes(' ')) {
-        stringToFind = stringToFind.replace(' ', '%20');
-    }
-    return stringToFind;
-}
+// search(characters, printCharacterCards, characterCards)
+// const search = async (resultOfSearch, printfunction, Cards) => {
+//     try {
+//         console.log(API + '?name=' + getInputValue());
+//         resultOfSearch = await fetchData(API + '?name=' + getInputValue());
+//         lastResult = resultOfSearch;
 
+//         pageNumberValue = 1;
+//         pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+
+//         printfunction();
+//     } catch(error){
+//         console.error(error, `Nothing found under keywords: ${inputSearch.value}`);
+//         Cards.forEach((card) => card.style.display = "none");
+
+//         lastResult = {info: {pages: 0}}; //Para que muestre cero
+//         pageNumberValue = 0;
+//         pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+//     }
+// }
 const searchCharacters = async () => {
     try {
-        console.log(API + '?name=' + getInputValue());
-        characters = await fetchData(API + '?name=' + getInputValue());
+        console.log(API + '?name=' + getInputValue(inputSearch));
+        characters = await fetchData(API + '?name=' + getInputValue(inputSearch));
         lastResult = characters;
 
         pageNumberValue = 1;
@@ -103,6 +114,10 @@ const searchCharacters = async () => {
     } catch(error){
         console.error(error, `Nothing found under keywords: ${inputSearch.value}`);
         characterCards.forEach((card) => card.style.display = "none");
+
+        lastResult = {info: {pages: 0}}; //Para que muestre cero
+        pageNumberValue = 0;
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
     }
 }
 
