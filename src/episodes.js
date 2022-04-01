@@ -47,9 +47,9 @@ function printEpisodeCards() {
 }
 function resetCardsValues() {
     for(let i = 0; i < episodeName.length; i++) {
-        episodeName[i].innerHTML = '<strong>Name: </strong>';
-        episodeDate[i].innerHTML = '<strong>Date: </strong>';
-        episodeNumber[i].innerHTML = '<strong>Episode: </strong>';
+        episodeName[i].innerHTML ='' /*'<strong>Name: </strong>'*/;
+        episodeDate[i].innerHTML = ''/*'<strong>Date: </strong>'*/;
+        episodeNumber[i].innerHTML = ''/*'<strong>Episode: </strong>'*/;
     }
 }
 

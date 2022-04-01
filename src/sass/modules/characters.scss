@@ -1,5 +1,6 @@
 main.characters-page {
     @include main-secondary-page();
+    padding: 20px;
 
     h1{
         @include h1-secondary-page();
@@ -18,9 +19,11 @@ main.characters-page {
         color: $secondary-color-1-dark-1;
     }
     .buttons {
-        width: fit-content;
-        display: flex;
-        gap: 30px;
+        width: 100%;
+        min-width: 300px;
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: space-around;
         button {
             // width: 150px;
             // height: 50px;
@@ -37,6 +40,7 @@ main.characters-page {
 }
 .search {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px,200px));
     grid-auto-flow: column;
     gap: 10px;
     input{
@@ -44,6 +48,8 @@ main.characters-page {
         border: 1px solid $secondary-color-1-dark-2;
         font-size: 1.8rem;
         font-family: $fuente2;
+        color: $black;
+        background-color: $white;
         border-radius: 5px;
         // outline: none;
     }
@@ -68,8 +74,7 @@ main.characters-page {
 
 .characters-page__main-grid-container {
     @include main-grid-container();
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding: 30px 0;
 
     .character {
         @include card();

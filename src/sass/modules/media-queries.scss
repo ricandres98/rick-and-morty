@@ -1,7 +1,28 @@
+@media (max-width:820px){
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+}
 @media (min-width:450px){
     header {
-        ul li{
-            font-size: 2rem;
+        ul{
+            gap: 10px;
+            margin-left: 10px;
+            li{
+                font-size: 2rem;
+            }
+        }         
+    }
+    .episodes-page__main-grid-container {
+        justify-items: flex-start;
+        .episode  {
+            min-width: 350px;
+
+            &:nth-of-type(2n) {
+                justify-self: flex-end;
+            }
         }
     }
 }
@@ -10,8 +31,19 @@
         font-size: 5rem;
         line-height: 6rem;
     }
+    .episodes-page__main-grid-container {
+        .episode  {
+            min-width: 500px;
+            ul{
+                
+                li {
+                    font-size: 3rem;
+                }
+            }
+        }
+    }
 }
-@media (min-width:1200px){
+@media (min-width:1150px){
     header {
         ul li{
             font-size: 3rem;
