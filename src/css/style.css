@@ -224,6 +224,8 @@ main.episodes-page h1 {
   margin: 0 auto;
   padding: 30px 0px;
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 500px));
+  justify-content: center;
   gap: 40px;
 }
 
@@ -243,6 +245,53 @@ main.episodes-page h1 {
   font-size: 2rem;
 }
 .episode ul li:first-child {
+  font-family: "Russo One", sans-serif;
+}
+main.locations-page {
+  min-height: 80vh;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding: 20px;
+}
+main.locations-page h1 {
+  margin: 0 auto;
+  text-align: center;
+  font-family: "Russo One", sans-serif;
+  font-size: 4rem;
+  letter-spacing: 2px;
+}
+@media (min-width: 700px) {
+  main.locations-page h1 {
+    font-size: 5rem;
+  }
+}
+
+.locations-page__main-grid-container {
+  max-width: 1215px;
+  margin: 0 auto;
+  padding: 30px 0px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 500px));
+  justify-content: center;
+  gap: 30px;
+}
+
+.location {
+  padding: 20px;
+  background-color: rgba(230, 237, 242, 0.7);
+  border-radius: 5px;
+}
+.location ul {
+  display: grid;
+  justify-content: center;
+  place-items: center;
+  text-align: center;
+  gap: 20px;
+}
+.location ul li {
+  font-size: 2rem;
+}
+.location ul li:first-child {
   font-family: "Russo One", sans-serif;
 }
 .main-page__hero {
@@ -353,6 +402,10 @@ main.episodes-page h1 {
     min-width: 500px;
   }
   .episodes-page__main-grid-container .episode ul li {
+    font-size: 3rem;
+  }
+
+  .locations-page__main-grid-container .location ul li {
     font-size: 3rem;
   }
 }

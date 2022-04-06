@@ -42,6 +42,17 @@
             }
         }
     }
+    .locations-page__main-grid-container {
+        .location  {
+            // min-width: 500px;
+            ul{
+                
+                li {
+                    font-size: 3rem;
+                }
+            }
+        }
+    }
 }
 @media (min-width:1150px){
     header {

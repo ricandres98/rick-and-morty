@@ -13,15 +13,34 @@ mixin episode-card
     .episode 
         .episode__info 
             ul 
-                li.episode-name: strong Name: 
-                li.episode-date: strong Date: 
-                li.episode-number: strong Episode: 
+                li.episode-name: strong 
+                li.episode-date: strong 
+                li.episode-number: strong
+
+mixin location-card 
+    .location 
+        .location__info 
+            ul 
+                li.location-name: strong Name: 
+                li.location-type: strong Type: 
+                li.location-dimension: strong Dimension: 
 
 mixin characters-panel-search
     .panel
         .search 
             input(type="text")#input-search
             button#button-search(type="button" onclick="searchCharacters()") Search
+        .pages 
+            span.page-number 1
+        .buttons
+            button(type="button" onclick="priorPage()") Previous
+            button(type="button" onclick="nextPage()") Next
+
+mixin locations-panel-search
+    .panel
+        .search 
+            input(type="text")#input-search
+            button#button-search(type="button" onclick="searchLocations()") Search
         .pages 
             span.page-number 1
         .buttons
