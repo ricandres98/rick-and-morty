@@ -8,12 +8,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&amp;family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="../assets/portal.png" type="image/x-icon">
     <link rel="stylesheet" href="../css/style.css">
   </head>
   <body> 
     <header> 
       <h2> <a href="./index.html"><img src="../assets/rick-and-morty-logo.png" alt="Rick and Morty" srcset=""></a></h2>
+      <label for="navbar"> <span class="material-icons-outlined">menu</span></label>
+      <input type="checkbox" id="navbar">
       <nav> 
         <ul> 
           <li><a href="./characters.html">Characters</a></li>
@@ -233,6 +236,7 @@
       <p>Proyecto realizado para experimentar con el consumo de la  <a target="_blank" rel="noreferrer noopener" href="https://rickandmortyapi.com/">API de Rick & Morty</a></p>
     </footer>
     <script src="../utils/fetchData.js" type="module"> </script>
+    <script src="../menu.js" type="module"> </script>
     <script src="../episodes.js" type="module"> </script>
   </body>
 </html>

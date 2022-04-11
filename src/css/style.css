@@ -38,30 +38,43 @@ main {
 
 header {
   width: 100%;
-  display: grid;
-  padding: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  position: relative;
+  padding: 0 20px;
   font-family: "Russo One", sans-serif;
   background-image: linear-gradient(to right bottom, #c2ff40, #acfa3b, #95f537, #7cef35, #5eea35, #4ae847, #32e657, #00e464, #00e57e, #00e594, #00e4a7, #19e3b7);
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
 }
-header ul {
-  height: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min-content, 90px));
-  column-gap: 5px;
-  align-content: center;
-  justify-items: center;
-  justify-content: space-around;
+header label {
+  position: relative;
 }
-header ul li {
-  display: inline-block;
-  margin: 20px 0;
+header label span.material-icons-outlined {
+  width: 36px;
+  font-size: 36px;
+  margin-right: 20px;
+  color: #11374e;
+}
+header input {
+  display: none;
+}
+header input:checked + nav {
+  display: block;
+}
+header nav {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  min-width: 30vw;
+  padding: 0 20px;
+  background-color: #43e74c;
+}
+header nav li {
+  padding: 20px 0;
   font-size: 1.5rem;
   color: #012033;
-  border-radius: 10px;
-}
-header ul li:first-child {
-  padding-left: 10px;
 }
 
 footer {
@@ -393,6 +406,43 @@ main.locations-page h1 {
   }
 }
 @media (min-width: 700px) {
+  header {
+    width: 100%;
+    display: grid;
+    padding: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    font-family: "Russo One", sans-serif;
+    background-image: linear-gradient(to right bottom, #c2ff40, #acfa3b, #95f537, #7cef35, #5eea35, #4ae847, #32e657, #00e464, #00e57e, #00e594, #00e4a7, #19e3b7);
+  }
+  header label, header input {
+    display: none;
+  }
+  header nav {
+    display: block;
+    position: static;
+    height: auto;
+    background-color: inherit;
+  }
+  header ul {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min-content, 90px));
+    column-gap: 5px;
+    align-content: center;
+    justify-items: center;
+    justify-content: space-around;
+  }
+  header ul li {
+    display: inline-block;
+    margin: 20px 0;
+    font-size: 1.5rem;
+    color: #012033;
+    border-radius: 10px;
+  }
+  header ul li:first-child {
+    padding-left: 10px;
+  }
+
   .main-page__hero h1 {
     font-size: 5rem;
     line-height: 6rem;
