@@ -1,4 +1,4 @@
-export const fetchData =(url_api) => {
+export const fetchData1 =(url_api) => {
     return new Promise((resolve, reject) => {
         const xhttp = new XMLHttpRequest();
         xhttp.open('GET', url_api, true);
@@ -12,4 +12,11 @@ export const fetchData =(url_api) => {
         }
         xhttp.send();
     });
+}
+
+export const fetchData = async (url_api) => {
+    const response = await fetch(url_api);
+    const data = await response.json();
+
+    return data;
 }

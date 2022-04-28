@@ -1,81 +1,102 @@
 import { fetchData } from "./utils/fetchData.js";
-import { getInputValue } from "./utils/getInputValue.js";
-
-const characterName = document.getElementsByClassName('character-name');
-const characterGender = document.getElementsByClassName('character-gender');
-const characterLocation = document.getElementsByClassName('character-location');
-const characterSpecies = document.getElementsByClassName('character-species');
-const characterImages = document.getElementsByClassName('character-image');
-const characterCards = [...document.getElementsByClassName('character')];
+import { getInputValue, deleteCards } from "./utils/utilities.js";
 
 const inputSearch = document.getElementById('input-search');
 
 const pageNumber = [...document.getElementsByClassName('page-number')];
 
 const API = "https://rickandmortyapi.com/api/character/";
+
 let characters = [];
 let pageNumberValue = 1;
-// Variable que permite almacenar el último objeto recibido a través de fetchData,
-// sirve para implementar más facilmente la paginación
-let lastResult = '';
+
+// Crear HTML dinámico para crear tarjeta de personaje
+function createCharacterCard(){
+    const character = document.createElement('div');
+    character.classList.add('character');
+    
+    const characterImg = document.createElement('div');
+    characterImg.classList.add('character__image');
+    const img = document.createElement('img');
+    characterImg.appendChild(img);
+
+    const characterInfo = document.createElement('div');
+    characterInfo.classList.add('character__info');
+
+    const ul = document.createElement('ul');
+
+    const liName = document.createElement('li');
+    liName.classList.add('character-name');
+    const liGender = document.createElement('li');
+    liGender.classList.add('character-gender');
+    const liLocation = document.createElement('li');
+    liLocation.classList.add('character-location');
+    const liSpecies = document.createElement('li');
+    liSpecies.classList.add('character-species');
+
+    const liArray = [liName, liGender, liLocation, liSpecies];
+
+    liArray.forEach(li => ul.appendChild(li));
+    characterInfo.appendChild(ul);
+
+    character.appendChild(characterImg);
+    character.appendChild(characterInfo);
+    
+    const charactersContainer = document.querySelector('.characters-page__main-grid-container');
+    charactersContainer.appendChild(character);
+
+    return {
+        character, 
+        img, 
+        liName, 
+        liGender, 
+        liLocation, 
+        liSpecies
+    }
+}
 
 
 const getAPIResources = async () => {
     try {
         characters = await fetchData(API);
-        lastResult = characters;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+    
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${characters.info.pages}`);
         printCharacterCards();
     } catch(error) {
         console.error(error);
     }
 }
+
 function printCharacterCards() {
-    characterCards.forEach((card) => card.style.display = 'block');
-    if(lastResult.results.length < characterCards.length) {
-        let diff = lastResult.results.length;
-        for(let i = diff; i < 20; i++) {
-            characterCards[i].style.display = 'none';
-        }
-    }
-    // let toBeUsed = lastResult.results.slice()
-    resetCardsValues();
-    for(let i = 0; i < lastResult.results.length; i++) {
-        characterImages[i].src = characters.results[i].image;
-        characterImages[i].alt = characters.results[i].name;
-        characterName[i].innerHTML += ' ' + characters.results[i].name;
-        characterGender[i].innerHTML += ' ' + characters.results[i].gender;
-        characterLocation[i].innerHTML += ' ' + characters.results[i].location.name;
-        characterSpecies[i].innerHTML += ' ' + characters.results[i].species;
-    }
-}
-function resetCardsValues() {
-    for(let i = 0; i < characterName.length; i++) {
-        characterName[i].innerHTML = '<strong>Name: </strong>';
-        characterGender[i].innerHTML = '<strong>Gender: </strong>';
-        characterLocation[i].innerHTML = '<strong>Location: </strong>';
-        characterSpecies[i].innerHTML = '<strong>Species: </strong>';
-    }
+    deleteCards('character');
+
+    characters.results.forEach(data => {
+        const card = createCharacterCard();
+        card.img.src = data.image;
+        card.img.alt = data.name;
+        card.liName.innerHTML = `<strong>Name: </strong> ${data.name}`;
+        card.liGender.innerHTML = `<strong>Gender: </strong> ${data.gender}`;
+        card.liLocation.innerHTML = `<strong>Location: </strong> ${data.location.name}`;
+        card.liSpecies.innerHTML = `<strong>Species: </strong> ${data.species}`;
+    });
 }
 
 const nextPage = async () => {
-    if(lastResult.info.next != null) {
+    if(characters.info.next != null) {
         pageNumberValue += 1;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${characters.info.pages}`);
 
-        characters = await fetchData(lastResult.info.next);
-        lastResult = characters;
+        characters = await fetchData(characters.info.next);
 
         printCharacterCards();
     }
 }
 const priorPage = async () => {
-    if(lastResult.info.prev != null) {
+    if(characters.info.prev != null) {
         pageNumberValue -= 1;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${characters.info.pages}`);
 
-        characters = await fetchData(lastResult.info.prev);
-        lastResult = characters;
+        characters = await fetchData(characters.info.prev);
 
         printCharacterCards();
     }
@@ -105,20 +126,20 @@ const searchCharacters = async () => {
     try {
         console.log(API + '?name=' + getInputValue(inputSearch));
         characters = await fetchData(API + '?name=' + getInputValue(inputSearch));
-        lastResult = characters;
 
         pageNumberValue = 1;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
-
+        
         printCharacterCards();
     } catch(error){
         console.error(error, `Nothing found under keywords: ${inputSearch.value}`);
-        characterCards.forEach((card) => card.style.display = "none");
+        deleteCards('character');
 
-        lastResult = {info: {pages: 0}}; //Para que muestre cero
+        characters = {info: {pages: 0}}; //Para que muestre cero
         pageNumberValue = 0;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
     }
+    pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${characters.info.pages}`);
+
+    console.log(characters);
 }
 
 document.addEventListener('onload', getAPIResources());

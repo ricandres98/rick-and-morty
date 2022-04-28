@@ -1,10 +1,5 @@
 import { fetchData } from "./utils/fetchData.js";
-import { getInputValue } from "./utils/getInputValue.js";
-
-const episodeName = [ ...document.getElementsByClassName('episode-name')];
-const episodeDate = [ ...document.getElementsByClassName('episode-date')];
-const episodeNumber = [ ...document.getElementsByClassName('episode-number')];
-const episodeCards = [...document.getElementsByClassName('episode')];
+import { getInputValue, deleteCards } from "./utils/utilities.js";
 
 const pageNumber = [...document.getElementsByClassName('page-number')];
 
@@ -14,63 +9,79 @@ const API = 'https://rickandmortyapi.com/api/episode/';
 
 let episodes = [];
 let pageNumberValue = 1;
-let lastResult = '';
+
+function createEpisodeCard(){
+    const episode = document.createElement('div');
+    episode.classList.add('episode');
+    
+    const episodeInfo = document.createElement('div');
+    episodeInfo.classList.add('episode__info');
+
+    const ul = document.createElement('ul');
+
+    const liName = document.createElement('li');
+    liName.classList.add('episode-name');
+    const liDate = document.createElement('li');
+    liDate.classList.add('episode-date');
+    const liNumber = document.createElement('li');
+    liNumber.classList.add('episode-number');
+
+    const liArray = [liName, liDate, liNumber];
+
+    liArray.forEach(li => ul.appendChild(li));
+    episodeInfo.appendChild(ul);
+
+    episode.appendChild(episodeInfo);
+    
+    const episodesContainer = document.querySelector('.episodes-page__main-grid-container');
+    episodesContainer.appendChild(episode);
+
+    return {
+        episode, 
+        liName, 
+        liDate, 
+        liNumber, 
+    }
+}
 
 const getAPIResources = async () => {
     try {
         episodes = await fetchData(API);
-        lastResult = episodes;
-        // pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
-        // printCharacterCards();
+        
         console.log(episodes);
         printEpisodeCards();
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${episodes.info.pages}`);
     } catch(error) {
         console.error(error);
     }
 }
-getAPIResources();
 
 function printEpisodeCards() {
-    episodeCards.forEach((card) => card.style.display = 'block');
-    if(lastResult.results.length < episodeCards.length) {
-        let diff = lastResult.results.length;
-        for(let i = diff; i < 20; i++) {
-            episodeCards[i].style.display = 'none';
-        }
-    }
-    resetCardsValues();
-    for(let i = 0; i < lastResult.results.length; i++) {
-        episodeName[i].innerHTML += ' ' + episodes.results[i].name;
-        episodeDate[i].innerHTML += ' ' + episodes.results[i].air_date;
-        episodeNumber[i].innerHTML += ' ' + episodes.results[i].episode;
-    }
-}
-function resetCardsValues() {
-    for(let i = 0; i < episodeName.length; i++) {
-        episodeName[i].innerHTML ='' /*'<strong>Name: </strong>'*/;
-        episodeDate[i].innerHTML = ''/*'<strong>Date: </strong>'*/;
-        episodeNumber[i].innerHTML = ''/*'<strong>Episode: </strong>'*/;
-    }
+    deleteCards('episode');
+    episodes.results.forEach(data => {
+        const card = createEpisodeCard();
+        card.liName.innerHTML = `${data.name}`;
+        card.liDate.innerHTML = `${data.air_date}`;
+        card.liNumber.innerHTML = `${data.episode}`;
+    });
 }
 
 const nextPage = async () => {
-    if(lastResult.info.next != null) {
+    if(episodes.info.next != null) {
         pageNumberValue += 1;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${episodes.info.pages}`);
 
-        episodes = await fetchData(lastResult.info.next);
-        lastResult = episodes;
+        episodes = await fetchData(episodes.info.next);
 
         printEpisodeCards();
     }
 }
 const priorPage = async () => {
-    if(lastResult.info.prev != null) {
+    if(episodes.info.prev != null) {
         pageNumberValue -= 1;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${episodes.info.pages}`);
 
-        episodes = await fetchData(lastResult.info.prev);
-        lastResult = episodes;
+        episodes = await fetchData(episodes.info.prev);
 
         printEpisodeCards();
     }
@@ -80,21 +91,21 @@ const searchEpisodes = async () => {
     try {
         console.log(API + '?name=' + getInputValue(inputSearch));
         episodes = await fetchData(API + '?name=' + getInputValue(inputSearch));
-        lastResult = episodes;
 
         pageNumberValue = 1;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
-
         printEpisodeCards();
     } catch(error){
         console.error(error, `Nothing found under keywords: ${inputSearch.value}`);
-        episodeCards.forEach((card) => card.style.display = "none");
+        deleteCards('episode');
 
-        lastResult = {info: {pages: 0}}; //Para que muestre cero
+        episodes = {info: {pages: 0}}; //Para que muestre cero
         pageNumberValue = 0;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
     }
+    pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${episodes.info.pages}`);
+
 }
+
+document.addEventListener('onload', getAPIResources());
 
 window.nextPage = nextPage;
 window.priorPage = priorPage;
