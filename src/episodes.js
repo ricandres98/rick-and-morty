@@ -57,7 +57,7 @@ const getAPIResources = async () => {
 }
 
 function printEpisodeCards() {
-    deleteCards('episode');
+    deleteCards('episodes');
     episodes.results.forEach(data => {
         const card = createEpisodeCard();
         card.liName.innerHTML = `${data.name}`;
@@ -96,7 +96,7 @@ const searchEpisodes = async () => {
         printEpisodeCards();
     } catch(error){
         console.error(error, `Nothing found under keywords: ${inputSearch.value}`);
-        deleteCards('episode');
+        deleteCards('episodes');
 
         episodes = {info: {pages: 0}}; //Para que muestre cero
         pageNumberValue = 0;

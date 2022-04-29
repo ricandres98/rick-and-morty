@@ -7,13 +7,7 @@ main.locations-page {
 }
 
 .locations-page__main-grid-container {
-    max-width: 1215px;
-    margin: 0 auto;
-    padding: 30px 0px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 500px));
-    justify-content: center;
-    gap: 30px;
+    @include main-grid-container-2;
 }
 
 .location {

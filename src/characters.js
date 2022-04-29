@@ -3,9 +3,11 @@ import { getInputValue, deleteCards } from "./utils/utilities.js";
 
 const inputSearch = document.getElementById('input-search');
 
-const pageNumber = [...document.getElementsByClassName('page-number')];
+const pageNumberBottom = document.querySelector('div + div.panel .pages span');
+const pageNumberTop = document.querySelector('.pages input + span.page-number')
 
 const API = "https://rickandmortyapi.com/api/character/";
+let lastURL = '';
 
 let characters = [];
 let pageNumberValue = 1;
@@ -59,8 +61,11 @@ function createCharacterCard(){
 const getAPIResources = async () => {
     try {
         characters = await fetchData(API);
+        lastURL = API;
     
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${characters.info.pages}`);
+        pageNumberTop.innerText = `/ ${characters.info.pages}`;
+        pageNumberBottom.innerText = `${pageNumberValue} / ${characters.info.pages}`;
+
         printCharacterCards();
     } catch(error) {
         console.error(error);
@@ -68,7 +73,7 @@ const getAPIResources = async () => {
 }
 
 function printCharacterCards() {
-    deleteCards('character');
+    deleteCards('characters');
 
     characters.results.forEach(data => {
         const card = createCharacterCard();
@@ -83,8 +88,14 @@ function printCharacterCards() {
 
 const nextPage = async () => {
     if(characters.info.next != null) {
+        const inputPage = document.querySelector('.pages input');
+
         pageNumberValue += 1;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${characters.info.pages}`);
+        inputPage.placeholder = pageNumberValue;
+        inputPage.value = pageNumberValue;
+
+        pageNumberTop.innerText = `/ ${characters.info.pages}`;
+        pageNumberBottom.innerText = `${pageNumberValue} / ${characters.info.pages}`;
 
         characters = await fetchData(characters.info.next);
 
@@ -93,8 +104,14 @@ const nextPage = async () => {
 }
 const priorPage = async () => {
     if(characters.info.prev != null) {
+        const inputPage = document.querySelector('.pages input');
+
         pageNumberValue -= 1;
-        pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${characters.info.pages}`);
+        inputPage.placeholder = pageNumberValue;
+        inputPage.value = pageNumberValue;
+
+        pageNumberTop.innerText = `/ ${characters.info.pages}`;
+        pageNumberBottom.innerText = `${pageNumberValue} / ${characters.info.pages}`;
 
         characters = await fetchData(characters.info.prev);
 
@@ -110,7 +127,7 @@ const priorPage = async () => {
 //         lastResult = resultOfSearch;
 
 //         pageNumberValue = 1;
-//         pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+//         pageNumberTop.innerText = `${pageNumberValue} / ${lastResult.info.pages}`;
 
 //         printfunction();
 //     } catch(error){
@@ -119,28 +136,86 @@ const priorPage = async () => {
 
 //         lastResult = {info: {pages: 0}}; //Para que muestre cero
 //         pageNumberValue = 0;
-//         pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${lastResult.info.pages}`);
+//         pageNumberTop.innerText = `${pageNumberValue} / ${lastResult.info.pages}`;
 //     }
 // }
 const searchCharacters = async () => {
+    const inputPage = document.querySelector('.pages input');
+
     try {
         console.log(API + '?name=' + getInputValue(inputSearch));
         characters = await fetchData(API + '?name=' + getInputValue(inputSearch));
 
+        lastURL = API + '?name=' + getInputValue(inputSearch);
+
         pageNumberValue = 1;
+        inputPage.value = pageNumberValue;
         
         printCharacterCards();
     } catch(error){
         console.error(error, `Nothing found under keywords: ${inputSearch.value}`);
-        deleteCards('character');
+        const charactersContainer = document.querySelector('.characters-page__main-grid-container');
+        
+        deleteCards('characters');
+        charactersContainer.innerHTML = `<p>Nothing found under keywords: ${inputSearch.value}</p>`;
 
         characters = {info: {pages: 0}}; //Para que muestre cero
+
         pageNumberValue = 0;
     }
-    pageNumber.forEach((item) => item.innerText = `${pageNumberValue} / ${characters.info.pages}`);
+
+    inputPage.placeholder = pageNumberValue;
+    inputPage.value = pageNumberValue;
+    
+    pageNumberTop.innerText = `/ ${characters.info.pages}`;
+    pageNumberBottom.innerText = `${pageNumberValue} / ${characters.info.pages}`;
+
 
     console.log(characters);
 }
+
+
+const goToPage = async() => {
+    const inputPage = document.querySelector('.pages input');
+
+    if(inputPage.value && Number(inputPage.value)) {
+        pageNumberValue = Number(inputPage.value);
+
+        if(inputPage.value > characters.info.pages) {
+            pageNumberValue = characters.info.pages;
+            inputPage.value = characters.info.pages;
+        }
+
+        inputPage.placeholder = pageNumberValue;
+        pageNumberBottom.innerText = `${pageNumberValue} / ${characters.info.pages}`;
+
+        try {
+            if(lastURL.includes('?')) {
+                characters = await fetchData(lastURL + '&page=' + pageNumberValue);
+            } else {
+                characters = await fetchData(lastURL + '?page=' + pageNumberValue);
+            }
+        } catch(error) {
+            console.error("report for function goToPage(): ", error)
+        }
+        
+        console.log(characters);
+        printCharacterCards();
+    }
+}
+
+const inputPage = document.querySelector('.pages input');
+inputPage.addEventListener('keyup', (event) => {
+    if(event.key === 'Enter') {
+        goToPage();
+    }
+});
+
+inputSearch.addEventListener('keyup', (event) => {
+    if(event.key === 'Enter') {
+        searchCharacters();
+    }
+})
 
 document.addEventListener('onload', getAPIResources());
 window.nextPage = nextPage;

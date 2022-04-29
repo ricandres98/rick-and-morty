@@ -48,6 +48,7 @@ main{
 
 @mixin main-grid-container {
     max-width: 1215px;
+    min-height: 700px;
     margin: 0 auto;
     padding: 140px 10px;
     display: grid;
@@ -55,6 +56,18 @@ main{
     grid-auto-rows: 400px;
     gap: 25px;
     justify-content: center;
+}
+
+@mixin main-grid-container-2 {
+    max-width: 1215px;
+    min-height: 700px;
+    margin: 0 auto;
+    padding: 30px 0px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 500px));
+    justify-content: center;
+    align-content: flex-start;
+    gap: 30px;
 }
 
 @mixin card {

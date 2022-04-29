@@ -3,16 +3,8 @@ block main-content
     main.main-page 
         section.main-page__hero 
             h1 Welcome to the biggest database of Rick & Morty's characters and episodes!
-        .main-page__main-grid-container
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
-            +character-card
+        section.main-page__random-cards
+            button(type="button" onclick="refresh()") <span></span> Refresh
+            .main-page__main-grid-container
 block scripts
     script(src="../index.js" type="module") 

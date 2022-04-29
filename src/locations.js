@@ -57,7 +57,7 @@ const getAPIResources = async () => {
 }
 
 function printLocationCards() {
-    deleteCards('location');
+    deleteCards('locations');
     locations.results.forEach(data => {
         const card = createLocationCard();
         card.liName.innerHTML = `${data.name}`;
@@ -98,7 +98,7 @@ const searchLocations = async () => {
         printLocationCards();
     } catch(error){
         console.error(error, `Nothing found under keywords: ${inputSearch.value}`);
-        locationCards.forEach((card) => card.style.display = "none");
+        deleteCards('locations');
 
         locations = {info: {pages: 0}}; //Para que muestre cero
         pageNumberValue = 0;

@@ -8,7 +8,7 @@ export const getInputValue = (input) => {
 }
 
 export function deleteCards(type) {
-    const charactersContainer = document.querySelector(`.${type}s-page__main-grid-container`);
+    const charactersContainer = document.querySelector(`.${type}-page__main-grid-container`);
     const cardsQuantity = charactersContainer.childNodes.length;
     for(let i = 0; i < cardsQuantity; i++){
         charactersContainer.removeChild(charactersContainer.childNodes[0]);

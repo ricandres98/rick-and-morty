@@ -1,47 +1,91 @@
 import { fetchData } from "./utils/fetchData.js";
+import { deleteCards } from "./utils/utilities.js";
 
-const characterName = document.getElementsByClassName('character-name');
-const characterGender = document.getElementsByClassName('character-gender');
-const characterLocation = document.getElementsByClassName('character-location');
-const characterSpecies = document.getElementsByClassName('character-species');
-const characterImages = document.getElementsByClassName('character-image');
-
-const API = "https://rickandmortyapi.com/api/";
-let APILinks = {}; 
+const API = "https://rickandmortyapi.com/api/character/"; 
 
 let characters = [];
-let episodes = [];
-let locations = [];
+
+function createCharacterCard(){
+    const character = document.createElement('div');
+    character.classList.add('character');
+    
+    const characterImg = document.createElement('div');
+    characterImg.classList.add('character__image');
+    const img = document.createElement('img');
+    characterImg.appendChild(img);
+
+    const characterInfo = document.createElement('div');
+    characterInfo.classList.add('character__info');
+
+    const ul = document.createElement('ul');
+
+    const liName = document.createElement('li');
+    liName.classList.add('character-name');
+    const liGender = document.createElement('li');
+    liGender.classList.add('character-gender');
+    const liLocation = document.createElement('li');
+    liLocation.classList.add('character-location');
+    const liSpecies = document.createElement('li');
+    liSpecies.classList.add('character-species');
+
+    const liArray = [liName, liGender, liLocation, liSpecies];
+
+    liArray.forEach(li => ul.appendChild(li));
+    characterInfo.appendChild(ul);
+
+    character.appendChild(characterImg);
+    character.appendChild(characterInfo);
+    
+    const charactersContainer = document.querySelector('.main-page__main-grid-container');
+    charactersContainer.appendChild(character);
+
+    return {
+        character, 
+        img, 
+        liName, 
+        liGender, 
+        liLocation, 
+        liSpecies,
+    }
+}
+const randomNumber = (min, max/*826*/) => {
+    const number = Math.floor(Math.random() * (max - min +1)) + min;
+    return number;
+}
+const charactersArray = (length) => {
+    const array = [];
+    for(let i = 0; i < length; i ++) {
+        array.push(randomNumber(1,826));
+    }
+    return array;
+}
 
 const getAPIResources = async () => {
     try {
-        APILinks = await fetchData(API);
-        [characters, episodes, locations] = await Promise.all([
-            fetchData(APILinks.characters),
-            fetchData(APILinks.episodes),
-            fetchData(APILinks.locations)
-        ]);
-        
+        characters = await fetchData(API + charactersArray(8));
+        console.log(characters);
         printCharacterCards();
         
     } catch(error) {
-        console.error(error);
+        console.error(API + charactersArray(8));
     }
 }
-getAPIResources();
 
 function printCharacterCards() {
-    for(let i = 0; i < characterName.length; i++) {
-        characterImages[i].src = characters.results[i].image;
-        characterImages[i].alt = characters.results[i].name;
-        characterName[i].innerHTML += ' ' + characters.results[i].name;
-        characterGender[i].innerHTML += ' ' + characters.results[i].gender;
-        characterLocation[i].innerHTML += ' ' + characters.results[i].location.name;
-        characterSpecies[i].innerHTML += ' ' + characters.results[i].species;
-    }
+    deleteCards('main');
+    characters.forEach(data => {
+        const card = createCharacterCard();
+        card.img.src = data.image;
+        card.img.alt = data.name;
+        card.liName.innerHTML = `<strong>Name: </strong> ${data.name}`;
+        card.liGender.innerHTML = `<strong>Gender: </strong> ${data.gender}`;
+        card.liLocation.innerHTML = `<strong>Location: </strong> ${data.location.name}`;
+        card.liSpecies.innerHTML = `<strong>Species: </strong> ${data.species}`;
+    });
+}
+function refresh() {
+    getAPIResources();
 }
 
-
-const getPage = async (url, start, end) => {
-    return await fetchData(url + '/' + intervalArray(start,end));
-}
+getAPIResources();
+window.refresh = refresh;
