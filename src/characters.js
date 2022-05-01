@@ -14,8 +14,8 @@ let pageNumberValue = 1;
 
 // Crear HTML dinámico para crear tarjeta de personaje
 function createCharacterCard(){
-    const character = document.createElement('div');
-    character.classList.add('character');
+    const card = document.createElement('div');
+    card.classList.add('character');
     
     const characterImg = document.createElement('div');
     characterImg.classList.add('character__image');
@@ -41,14 +41,14 @@ function createCharacterCard(){
     liArray.forEach(li => ul.appendChild(li));
     characterInfo.appendChild(ul);
 
-    character.appendChild(characterImg);
-    character.appendChild(characterInfo);
+    card.appendChild(characterImg);
+    card.appendChild(characterInfo);
     
     const charactersContainer = document.querySelector('.characters-page__main-grid-container');
-    charactersContainer.appendChild(character);
+    // charactersContainer.appendChild(character);
 
     return {
-        character, 
+        card, 
         img, 
         liName, 
         liGender, 
@@ -73,7 +73,10 @@ const getAPIResources = async () => {
 }
 
 function printCharacterCards() {
-    deleteCards('characters');
+    const charactersContainer = document.querySelector('.characters-page__main-grid-container');
+    const fragment = new DocumentFragment();
+    // deleteCards('characters');
+    charactersContainer.innerHTML = "";
 
     characters.results.forEach(data => {
         const card = createCharacterCard();
@@ -83,7 +86,10 @@ function printCharacterCards() {
         card.liGender.innerHTML = `<strong>Gender: </strong> ${data.gender}`;
         card.liLocation.innerHTML = `<strong>Location: </strong> ${data.location.name}`;
         card.liSpecies.innerHTML = `<strong>Species: </strong> ${data.species}`;
+
+        fragment.appendChild(card.card);
     });
+    charactersContainer.appendChild(fragment);
 }
 
 const nextPage = async () => {

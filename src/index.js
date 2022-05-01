@@ -6,8 +6,8 @@ const API = "https://rickandmortyapi.com/api/character/";
 let characters = [];
 
 function createCharacterCard(){
-    const character = document.createElement('div');
-    character.classList.add('character');
+    const card = document.createElement('div');
+    card.classList.add('character');
     
     const characterImg = document.createElement('div');
     characterImg.classList.add('character__image');
@@ -33,14 +33,14 @@ function createCharacterCard(){
     liArray.forEach(li => ul.appendChild(li));
     characterInfo.appendChild(ul);
 
-    character.appendChild(characterImg);
-    character.appendChild(characterInfo);
+    card.appendChild(characterImg);
+    card.appendChild(characterInfo);
     
     const charactersContainer = document.querySelector('.main-page__main-grid-container');
-    charactersContainer.appendChild(character);
+    // charactersContainer.appendChild(character);
 
     return {
-        character, 
+        card, 
         img, 
         liName, 
         liGender, 
@@ -72,16 +72,26 @@ const getAPIResources = async () => {
 }
 
 function printCharacterCards() {
-    deleteCards('main');
+    const charactersContainer = document.querySelector('.main-page__main-grid-container');
+    const fragment = new DocumentFragment();
+    
+    // deleteCards('main');
+    charactersContainer.innerHTML = "";
     characters.forEach(data => {
         const card = createCharacterCard();
+        
         card.img.src = data.image;
         card.img.alt = data.name;
         card.liName.innerHTML = `<strong>Name: </strong> ${data.name}`;
         card.liGender.innerHTML = `<strong>Gender: </strong> ${data.gender}`;
         card.liLocation.innerHTML = `<strong>Location: </strong> ${data.location.name}`;
         card.liSpecies.innerHTML = `<strong>Species: </strong> ${data.species}`;
+        
+        fragment.appendChild(card.card);
     });
+    charactersContainer.appendChild(fragment);
+    console.log(fragment)
+
 }
 function refresh() {
     getAPIResources();

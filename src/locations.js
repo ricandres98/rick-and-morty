@@ -34,7 +34,7 @@ function createLocationCard(){
     location.appendChild(locationInfo);
     
     const locationsContainer = document.querySelector('.locations-page__main-grid-container');
-    locationsContainer.appendChild(location);
+    // locationsContainer.appendChild(location);
 
     return {
         location, 
@@ -57,13 +57,20 @@ const getAPIResources = async () => {
 }
 
 function printLocationCards() {
-    deleteCards('locations');
+    const locationsContainer = document.querySelector('.locations-page__main-grid-container');
+    const fragment = new DocumentFragment();
+
+    locationsContainer.innerHTML = "";
+    // deleteCards('locations');
     locations.results.forEach(data => {
         const card = createLocationCard();
         card.liName.innerHTML = `${data.name}`;
         card.liType.innerHTML = `<strong>Type: </strong> ${data.type}`;
         card.liDimension.innerHTML = `<strong>Dimension: </strong> ${data.dimension}`;
+
+        fragment.appendChild(card.location);
     });
+    locationsContainer.appendChild(fragment);
 }
 
 const nextPage = async () => {
