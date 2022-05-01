@@ -31,6 +31,7 @@ mixin characters-panel-search
             input(type="text")#input-search
             button#button-search(type="button" onclick="searchCharacters()") Search
         .pages 
+            span Page: 
             input(placeholder="1")
             span.page-number 1
         .buttons
@@ -43,6 +44,7 @@ mixin locations-panel-search
             input(type="text")#input-search
             button#button-search(type="button" onclick="searchLocations()") Search
         .pages 
+            span Page: 
             span.page-number 1
         .buttons
             button(type="button" onclick="priorPage()") < Previous
@@ -54,6 +56,7 @@ mixin episodes-panel-search
             input(type="text")#input-search
             button#button-search(type="button" onclick="searchEpisodes()") Search
         .pages 
+            span Page:
             span.page-number 1
         .buttons
             button(type="button" onclick="priorPage()") < Previous
@@ -62,6 +65,7 @@ mixin episodes-panel-search
 mixin panel
     .panel
         .pages 
+            span Page: 
             span.page-number 1
         .buttons
             button(type="button" onclick="priorPage()") < Previous

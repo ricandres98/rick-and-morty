@@ -34,7 +34,7 @@ function createEpisodeCard(){
     episode.appendChild(episodeInfo);
     
     const episodesContainer = document.querySelector('.episodes-page__main-grid-container');
-    episodesContainer.appendChild(episode);
+    // episodesContainer.appendChild(episode);
 
     return {
         episode, 
@@ -57,13 +57,21 @@ const getAPIResources = async () => {
 }
 
 function printEpisodeCards() {
-    deleteCards('episodes');
+    const episodesContainer = document.querySelector('.episodes-page__main-grid-container');
+    const fragment = new DocumentFragment();
+
+    episodesContainer.innerHTML = "";
+    // deleteCards('episodes');
     episodes.results.forEach(data => {
         const card = createEpisodeCard();
         card.liName.innerHTML = `${data.name}`;
         card.liDate.innerHTML = `${data.air_date}`;
         card.liNumber.innerHTML = `${data.episode}`;
+
+        fragment.appendChild(card.episode);
     });
+
+    episodesContainer.appendChild(fragment);
 }
 
 const nextPage = async () => {
